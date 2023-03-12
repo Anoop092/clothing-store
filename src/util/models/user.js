@@ -1,11 +1,13 @@
 import {getFirestore,doc,getDoc,setDoc, collection} from 'firebase/firestore'
-import { fireBaseApp } from '../firebase/firebase.util'
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
+import { fireBaseApp,auth } from '../firebase/firebase.util'
+
 
 // it directly points to database
 
 const db = getFirestore(fireBaseApp);
 
-const createUserDocument = async (user)=>{
+const createUserDocument = async (user,aditionalInfo)=>{
     // helps to point specic document in collection, if not exists it is going to create one
     const userRefdoc = doc(db,'user',user.uid);
     // getting data from document
@@ -17,7 +19,8 @@ const createUserDocument = async (user)=>{
             await setDoc(userRefdoc,{
                 displayName,
                 email,
-                createdAt
+                createdAt,
+                ...aditionalInfo
             })
          } catch (error) {
             console.log(error.message)
@@ -25,7 +28,17 @@ const createUserDocument = async (user)=>{
     }
     return userSnapshot
     
-}    
+} 
+const createUserAuthWithEmailAndPassword =async (email,password)=>{
+    if (!email||!password) return
+    return await createUserWithEmailAndPassword(auth,email,password);
+}
+const LoginUser = async(email,password)=>{
+    if (!email||!password) return
+    return await signInWithEmailAndPassword(auth,email,password);
+}   
 export {
-    createUserDocument
+    createUserDocument,
+    createUserAuthWithEmailAndPassword,
+    LoginUser
 }

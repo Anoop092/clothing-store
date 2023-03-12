@@ -1,6 +1,6 @@
 import {initializeApp} from 'firebase/app';
-import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect} from 'firebase/auth';
-import {getFirestore,doc,getDoc,setDoc} from 'firebase/firestore'
+import {getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword} from 'firebase/auth';
+
 // connecting to firebase database which is hosted;
 const firebaseConfig = {
     apiKey: "AIzaSyCv06Qar-1_AC43SKrbuJQyskdzkRibpRw",
