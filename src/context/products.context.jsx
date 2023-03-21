@@ -1,16 +1,26 @@
 import { createContext, useEffect, useState } from "react";
-import PRODUCTS_DATA from "../data/products-data.json";
+import PRODUCTS_DATA from "../data/products-data.js";
+import { getCollectionandDocument } from "../util/models/products.js";
 
 const productsContext = createContext({
-  products: null,
+  products: {},
   setProducts: () => null,
 });
 
 const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({});
+  // useEffect(() => {
+  //   setProducts(PRODUCTS_DATA);
+  // }, []);
   useEffect(() => {
-    setProducts(PRODUCTS_DATA);
+    const getCatrgoriedData = async () => {
+      const data = await getCollectionandDocument();
+      setProducts(data);
+      return data;
+    };
+    getCatrgoriedData();
   }, []);
+
   const value = { products };
   return (
     <productsContext.Provider value={value}>
